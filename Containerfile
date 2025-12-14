@@ -24,11 +24,13 @@ FROM scratch AS ctx
 COPY build /build
 COPY custom /custom
 # Copy common and brew files from Project Bluefin (distroless pattern)
-COPY --from=ghcr.io/projectbluefin/common:latest /system_files/shared /files
-COPY --from=ghcr.io/projectbluefin/brew:latest /system_files /files
+# Following the pattern from ublue-os/bluefin: merge bluefin into shared
+COPY --from=ghcr.io/projectbluefin/common:latest /system_files/shared /system_files/shared
+COPY --from=ghcr.io/projectbluefin/common:latest /system_files/bluefin /system_files/shared
+COPY --from=ghcr.io/projectbluefin/brew:latest /system_files /system_files/brew
 
 # Base Image - Using silverblue-main as the foundation
-FROM ghcr.io/ublue-os/silverblue-main:stable
+FROM ghcr.io/ublue-os/silverblue-main:latest
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest

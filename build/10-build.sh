@@ -15,10 +15,15 @@ source /ctx/build/copr-helpers.sh
 
 echo "::group:: Copy Project Bluefin Common and Brew Files"
 
+# Remove ublue-os-just package to avoid conflicts with projectbluefin/common files
+# Following the pattern from ublue-os/bluefin
+dnf remove -y ublue-os-just
+
 # Copy all system files from Project Bluefin common and brew layers
 # This includes ujust completions, udev rules, Homebrew, and other shared configuration
 # Following the distroless pattern: https://github.com/projectbluefin/distroless
-cp -avf /ctx/files/. /
+cp -avf /ctx/system_files/shared/. /
+cp -avf /ctx/system_files/brew/. /
 
 echo "::endgroup::"
 

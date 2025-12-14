@@ -316,3 +316,7 @@ format:
     fi
     # Run shfmt on all Bash scripts
     /usr/bin/find . -iname "*.sh" -type f -exec shfmt --write "{}" ';'
+
+# Build and run VM in one command - combines build, rebuild-qcow2, and run-vm-qcow2
+[group('Run Virtal Machine')]
+show-me-the-future $target_image=("localhost/" + image_name) $tag=default_tag: (rebuild-qcow2 target_image tag) (run-vm-qcow2 target_image tag)
