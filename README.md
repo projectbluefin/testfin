@@ -1,8 +1,38 @@
-# finpilot
+# testfin
 
 A template for building custom bootc operating system images based on the lessons from [Universal Blue](https://universal-blue.org/) and [Bluefin](https://projectbluefin.io). It is designed to be used manually, but is optimized to be bootstraped by GitHub Copilot. After set up you'll have your own custom Linux. 
 
 > Be the one who moves, not the one who is moved.
+
+## What Makes testfin Different?
+
+This image is based on [Fedora Silverblue](https://fedoraproject.org/silverblue/) and includes integrations from [Project Bluefin](https://projectbluefin.io):
+
+### Base Image
+- **Base**: `ghcr.io/ublue-os/silverblue-main:stable` - Fedora Silverblue with Universal Blue enhancements
+- **Desktop**: GNOME desktop environment
+- **Package Manager**: Immutable base with layered packages via `dnf5`
+
+### Added from Project Bluefin
+- **Common Layer**: Shared configuration, udev rules, and ujust command completions from `@projectbluefin/common`
+- **Homebrew Integration**: Pre-installed Homebrew package manager from `@projectbluefin/brew` for runtime package management
+- **Curated Brewfiles**: Ready-to-use package collections for development, CLI tools, and fonts
+- **Flatpak Support**: Automatic installation of GUI applications on first boot
+- **ujust Commands**: User-friendly shortcuts for common system tasks
+
+### Runtime Package Management
+- **Homebrew (Brew)**: CLI tools and development environments installed via Brewfiles
+- **Flatpak**: GUI applications from Flathub
+- **Build-time**: System packages via `dnf5` in build scripts
+
+### Production Features
+- **GitHub Actions**: Automated builds on every commit
+- **Renovate**: Automatic dependency updates
+- **Image Signing**: Optional cosign support for image verification (disabled by default)
+- **SBOM Generation**: Optional software bill of materials (disabled by default)
+- **Rechunking**: Optional layer optimization for better distribution (disabled by default)
+
+*Last updated: 2025-12-14*
 
 ## Guided Copilot Mode
 

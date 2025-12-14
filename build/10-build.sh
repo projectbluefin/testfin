@@ -13,6 +13,26 @@ set -eoux pipefail
 # shellcheck source=/dev/null
 source /ctx/build/copr-helpers.sh
 
+echo "::group:: Copy Project Bluefin Common Files"
+
+# Copy shared system files from Project Bluefin common layer
+# This includes ujust completions, udev rules, and other shared configuration
+rsync -rvK /ctx/common/shared/ /
+
+echo "::endgroup::"
+
+echo "::group:: Install Homebrew"
+
+# Extract and install Homebrew from Project Bluefin brew layer
+# This provides the Homebrew package manager for runtime package installation
+mkdir -p /home/linuxbrew
+tar --zstd -xvf /ctx/brew/usr/share/homebrew.tar.zst -C /
+
+# Copy Homebrew system files (ujust commands, etc.)
+rsync -rvK /ctx/brew/ / --exclude='usr/share/homebrew.tar.zst'
+
+echo "::endgroup::"
+
 echo "::group:: Copy Custom Files"
 
 # Copy Brewfiles to standard location
