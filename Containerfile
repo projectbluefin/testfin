@@ -19,17 +19,13 @@
 ARG COMMON_IMAGE="ghcr.io/projectbluefin/common:latest"
 ARG BREW_IMAGE="ghcr.io/projectbluefin/brew:latest"
 
-FROM ${COMMON_IMAGE} AS common
-FROM ${BREW_IMAGE} AS brew
-
 # Build context stage - files needed for build but not in final image
 FROM scratch AS ctx
 COPY build /build
 COPY custom /custom
-# Copy common files from Project Bluefin common layer
-COPY --from=common /system_files/shared /ctx/common/shared
-# Copy brew files from Project Bluefin brew layer  
-COPY --from=brew /system_files /ctx/brew
+# Copy common and brew files from Project Bluefin (distroless pattern)
+COPY --from=ghcr.io/projectbluefin/common:latest /system_files/shared /files
+COPY --from=ghcr.io/projectbluefin/brew:latest /system_files /files
 
 # Base Image - Using silverblue-main as the foundation
 FROM ghcr.io/ublue-os/silverblue-main:stable

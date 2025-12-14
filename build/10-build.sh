@@ -5,7 +5,7 @@ set -eoux pipefail
 ###############################################################################
 # Main Build Script
 ###############################################################################
-# This script follows the @ublue-os/bluefin pattern for build scripts.
+# This script follows the @projectbluefin/distroless pattern for build scripts.
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################
 
@@ -13,29 +13,12 @@ set -eoux pipefail
 # shellcheck source=/dev/null
 source /ctx/build/copr-helpers.sh
 
-# Ensure required tools are available
-if ! command -v rsync &> /dev/null; then
-    echo "Installing rsync for file operations..."
-    dnf5 install -y rsync
-fi
+echo "::group:: Copy Project Bluefin Common and Brew Files"
 
-echo "::group:: Copy Project Bluefin Common Files"
-
-# Copy shared system files from Project Bluefin common layer
-# This includes ujust completions, udev rules, and other shared configuration
-rsync -rvK /ctx/common/shared/ /
-
-echo "::endgroup::"
-
-echo "::group:: Install Homebrew"
-
-# Extract and install Homebrew from Project Bluefin brew layer
-# This provides the Homebrew package manager for runtime package installation
-mkdir -p /home/linuxbrew
-tar --zstd -xvf /ctx/brew/usr/share/homebrew.tar.zst -C /
-
-# Copy Homebrew system files (ujust commands, etc.)
-rsync -rvK /ctx/brew/ / --exclude='usr/share/homebrew.tar.zst'
+# Copy all system files from Project Bluefin common and brew layers
+# This includes ujust completions, udev rules, Homebrew, and other shared configuration
+# Following the distroless pattern: https://github.com/projectbluefin/distroless
+cp -avf /ctx/files/. /
 
 echo "::endgroup::"
 
@@ -69,6 +52,12 @@ echo "::group:: System Configuration"
 
 # Enable/disable systemd services
 systemctl enable podman.socket
+
+# Enable brew services (from Project Bluefin brew layer)
+systemctl enable brew-setup.service
+systemctl enable brew-upgrade.timer
+systemctl enable brew-update.timer
+
 # Example: systemctl mask unwanted-service
 
 echo "::endgroup::"
