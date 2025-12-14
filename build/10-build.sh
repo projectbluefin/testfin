@@ -13,6 +13,12 @@ set -eoux pipefail
 # shellcheck source=/dev/null
 source /ctx/build/copr-helpers.sh
 
+# Ensure required tools are available
+if ! command -v rsync &> /dev/null; then
+    echo "Installing rsync for file operations..."
+    dnf5 install -y rsync
+fi
+
 echo "::group:: Copy Project Bluefin Common Files"
 
 # Copy shared system files from Project Bluefin common layer

@@ -28,12 +28,12 @@
 **Source of truth**: `Containerfile` line 4: `# Name: testfin`
 
 **Files to update:**
-- `Containerfile` (line 9)
+- `Containerfile` (line 4)
 - `Justfile` (line 1)
 - `README.md` (line 1)
 - `artifacthub-repo.yml` (line 5)
 - `custom/ujust/README.md` (~line 175)
-- `.github/workflows/ghcr-pruner.yml` (line 22)
+- `.github/workflows/clean.yml` (line 23)
 
 ### 2. Create "What's Different" section in README
 
