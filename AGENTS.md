@@ -1,4 +1,4 @@
-# Copilot Instructions for finpilot bootc Image Template
+# Copilot Instructions for testfin bootc Image Template
 
 ## CRITICAL: Pre-Commit Checklist
 
@@ -23,9 +23,9 @@
 
 **When this repository is used as a template, you MUST:**
 
-### 1. Rename ALL instances of `finpilot`
+### 1. Rename ALL instances of template name
 
-**Source of truth**: `Containerfile` line 9: `# Name: finpilot`
+**Source of truth**: `Containerfile` line 4: `# Name: testfin`
 
 **Files to update:**
 - `Containerfile` (line 9)
@@ -953,5 +953,5 @@ Assisted-by: Claude 3.5 Sonnet via GitHub Copilot
 ---
 
 **Last Updated**: 2025-11-14  
-**Template Version**: finpilot (Enhanced with comprehensive Copilot instructions)  
+**Template Version**: testfin (Based on finpilot with silverblue-main + Project Bluefin integrations)  
 **Maintainer**: Universal Blue Community

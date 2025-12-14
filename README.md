@@ -98,13 +98,14 @@ Click "Use this template" to create a new repository from this template.
 
 ### 2. Rename the Project
 
-Important: Change `finpilot` to your repository name in these 5 files:
+Important: Change `testfin` to your repository name in these 6 files:
 
-1. `Containerfile` (line 9): `# Name: your-repo-name`
+1. `Containerfile` (line 4): `# Name: your-repo-name`
 2. `Justfile` (line 1): `export image_name := "your-repo-name"`
 3. `README.md` (line 1): `# your-repo-name`
 4. `artifacthub-repo.yml` (line 5): `repositoryID: your-repo-name`
 5. `custom/ujust/README.md` (~line 175): `localhost/your-repo-name:stable`
+6. `.github/workflows/clean.yml` (line 23): `packages: your-repo-name`
 
 ### 3. Enable GitHub Actions
 
@@ -117,9 +118,9 @@ Note: Image signing is disabled by default. Your images will build successfully 
 
 ### 4. Customize Your Image
 
-Choose your base image in `Containerfile` (line 23):
+Choose your base image in `Containerfile` (line 35):
 ```dockerfile
-FROM ghcr.io/ublue-os/bluefin:stable
+FROM ghcr.io/ublue-os/silverblue-main:stable
 ```
 
 Add your packages in `build/10-build.sh`:
