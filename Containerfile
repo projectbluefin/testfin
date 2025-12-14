@@ -1,14 +1,9 @@
-# Allow build scripts to be referenced without being copied into the final image
-FROM scratch AS ctx
-COPY build /build
-COPY custom /custom
-
 ###############################################################################
 # PROJECT NAME CONFIGURATION
 ###############################################################################
-# Name: finpilot
+# Name: testfin
 #
-# IMPORTANT: Change "finpilot" above to your desired project name.
+# IMPORTANT: Change "testfin" above to your desired project name.
 # This name should be used consistently throughout the repository in:
 #   - Justfile: export image_name := env("IMAGE_NAME", "your-name-here")
 #   - README.md: # your-name-here (title)
@@ -20,8 +15,20 @@ COPY custom /custom
 # to maintain consistency.
 ###############################################################################
 
-# Base Image
-FROM ghcr.io/ublue-os/bluefin:stable@sha256:c9411d9909708d57d8e87c160a308a4a8c795764fb4beff344340755412b9178
+# Common and Brew OCI layers from Project Bluefin
+ARG COMMON_IMAGE="ghcr.io/projectbluefin/common:latest"
+ARG BREW_IMAGE="ghcr.io/projectbluefin/brew:latest"
+
+# Build context stage - files needed for build but not in final image
+FROM scratch AS ctx
+COPY build /build
+COPY custom /custom
+# Copy common and brew files from Project Bluefin (distroless pattern)
+COPY --from=ghcr.io/projectbluefin/common:latest /system_files/shared /files
+COPY --from=ghcr.io/projectbluefin/brew:latest /system_files /files
+
+# Base Image - Using silverblue-main as the foundation
+FROM ghcr.io/ublue-os/silverblue-main:stable
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest

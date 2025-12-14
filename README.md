@@ -1,8 +1,38 @@
-# finpilot
+# testfin
 
 A template for building custom bootc operating system images based on the lessons from [Universal Blue](https://universal-blue.org/) and [Bluefin](https://projectbluefin.io). It is designed to be used manually, but is optimized to be bootstraped by GitHub Copilot. After set up you'll have your own custom Linux. 
 
 > Be the one who moves, not the one who is moved.
+
+## What Makes testfin Different?
+
+This image is based on [Fedora Silverblue](https://fedoraproject.org/silverblue/) and includes integrations from [Project Bluefin](https://projectbluefin.io):
+
+### Base Image
+- **Base**: `ghcr.io/ublue-os/silverblue-main:stable` - Fedora Silverblue with Universal Blue enhancements
+- **Desktop**: GNOME desktop environment
+- **Package Manager**: Immutable base with layered packages via `dnf5`
+
+### Added from Project Bluefin
+- **Common Layer**: Shared configuration, udev rules, and ujust command completions from `@projectbluefin/common`
+- **Homebrew Integration**: Pre-installed Homebrew package manager from `@projectbluefin/brew` for runtime package management
+- **Curated Brewfiles**: Ready-to-use package collections for development, CLI tools, and fonts
+- **Flatpak Support**: Automatic installation of GUI applications on first boot
+- **ujust Commands**: User-friendly shortcuts for common system tasks
+
+### Runtime Package Management
+- **Homebrew (Brew)**: CLI tools and development environments installed via Brewfiles
+- **Flatpak**: GUI applications from Flathub
+- **Build-time**: System packages via `dnf5` in build scripts
+
+### Production Features
+- **GitHub Actions**: Automated builds on every commit
+- **Renovate**: Automatic dependency updates
+- **Image Signing**: Optional cosign support for image verification (disabled by default)
+- **SBOM Generation**: Optional software bill of materials (disabled by default)
+- **Rechunking**: Optional layer optimization for better distribution (disabled by default)
+
+*Last updated: 2025-12-14*
 
 ## Guided Copilot Mode
 
@@ -68,13 +98,14 @@ Click "Use this template" to create a new repository from this template.
 
 ### 2. Rename the Project
 
-Important: Change `finpilot` to your repository name in these 5 files:
+Important: Change `testfin` to your repository name in these 6 files:
 
-1. `Containerfile` (line 9): `# Name: your-repo-name`
+1. `Containerfile` (line 4): `# Name: your-repo-name`
 2. `Justfile` (line 1): `export image_name := "your-repo-name"`
 3. `README.md` (line 1): `# your-repo-name`
 4. `artifacthub-repo.yml` (line 5): `repositoryID: your-repo-name`
 5. `custom/ujust/README.md` (~line 175): `localhost/your-repo-name:stable`
+6. `.github/workflows/clean.yml` (line 23): `packages: your-repo-name`
 
 ### 3. Enable GitHub Actions
 
@@ -87,9 +118,9 @@ Note: Image signing is disabled by default. Your images will build successfully 
 
 ### 4. Customize Your Image
 
-Choose your base image in `Containerfile` (line 23):
+Choose your base image in `Containerfile` (line 35):
 ```dockerfile
-FROM ghcr.io/ublue-os/bluefin:stable
+FROM ghcr.io/ublue-os/silverblue-main:stable
 ```
 
 Add your packages in `build/10-build.sh`:

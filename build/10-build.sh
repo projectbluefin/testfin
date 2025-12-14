@@ -5,13 +5,22 @@ set -eoux pipefail
 ###############################################################################
 # Main Build Script
 ###############################################################################
-# This script follows the @ublue-os/bluefin pattern for build scripts.
+# This script follows the @projectbluefin/distroless pattern for build scripts.
 # It uses set -eoux pipefail for strict error handling and debugging.
 ###############################################################################
 
 # Source helper functions
 # shellcheck source=/dev/null
 source /ctx/build/copr-helpers.sh
+
+echo "::group:: Copy Project Bluefin Common and Brew Files"
+
+# Copy all system files from Project Bluefin common and brew layers
+# This includes ujust completions, udev rules, Homebrew, and other shared configuration
+# Following the distroless pattern: https://github.com/projectbluefin/distroless
+cp -avf /ctx/files/. /
+
+echo "::endgroup::"
 
 echo "::group:: Copy Custom Files"
 
@@ -43,6 +52,12 @@ echo "::group:: System Configuration"
 
 # Enable/disable systemd services
 systemctl enable podman.socket
+
+# Enable brew services (from Project Bluefin brew layer)
+systemctl enable brew-setup.service
+systemctl enable brew-upgrade.timer
+systemctl enable brew-update.timer
+
 # Example: systemctl mask unwanted-service
 
 echo "::endgroup::"
